@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { GrView } from "react-icons/gr";
+
+import { BiHide } from "react-icons/bi";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -37,6 +40,10 @@ const LoginPage = () => {
               repairing a variety of brands, ensuring convenience and expertise
               meet at your home. Your trusted tech solution awaits!
             </p>
+            <div className="flex justify-center">
+  <img src="https://dstemp.teq2web.com/images/phonelab-login.png" alt="Ismaa Image"/>
+</div>
+
             <p className="text-gray-600 mt-6 text-sm">
               By creating an account, you agree with our
               <span className="text-blue-600 cursor-pointer">
@@ -95,7 +102,7 @@ const LoginPage = () => {
                   className="absolute right-3 top-9 cursor-pointer text-gray-500"
                   onClick={togglePasswordVisibility}
                 >
-                  {showPassword ? "🙈" : "👁"}
+                  {showPassword ? <BiHide />: <GrView />}
                 </span>
               </div>
 
