@@ -1,137 +1,135 @@
 import React, { useState } from "react";
-import { GrView } from "react-icons/gr";
+import { useNavigate } from "react-router-dom";
+import users from "../demojson/users.json"; 
+import illustration from "../assets/phonelab-login.png";  
+import "mdb-react-ui-kit/dist/css/mdb.min.css"; 
+import { MDBContainer, MDBRow, MDBCol, MDBInput, MDBBtn } from "mdb-react-ui-kit";
+import { FaEye, FaEyeSlash } from "react-icons/fa"; 
 
-import { BiHide } from "react-icons/bi";
 
-const LoginPage = () => {
+function Login() {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState(""); 
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
 
-  const togglePasswordVisibility = () => {
-    setShowPassword((prev) => !prev);
+  const navigate = useNavigate();
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    const user = users.find(
+      (user) => user.email === email && user.password === password
+    );
+
+    if (user) {
+      setError("");
+      console.log("Login successful!");
+      navigate("/home");
+      if (rememberMe) {
+        localStorage.setItem("email", email);
+        localStorage.setItem("password", password);
+      }
+    } else {
+      setError("Invalid email or password. Please try again.");
+    }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Validate email and password
-    if (!email.includes("@")) {
-      alert("Please enter a valid email address.");
-      return;
-    }
-    if (password.length < 6) {
-      alert("Password must be at least 6 characters long.");
-      return;
-    }
-    console.log("Logging in with:", { email, password });
+  const handleRememberMe = () => {
+    setRememberMe(!rememberMe);
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-      <div className="container mx-auto px-4 py-10">
-        <div className="flex flex-wrap justify-center">
-          {/* Left Section */}
-          <div className="w-full md:w-1/2 lg:w-2/5 p-6">
-            <h2 className="text-4xl font-semibold text-black">
-              Get Your Device Repaired Anytime
-            </h2>
-            <p className="text-gray-700 mt-3">
-              PhoneLab brings top-notch repair services. We specialize in
-              repairing a variety of brands, ensuring convenience and expertise
-              meet at your home. Your trusted tech solution awaits!
-            </p>
-            <div className="flex justify-center">
-  <img src="https://dstemp.teq2web.com/images/phonelab-login.png" alt="Ismaa Image"/>
-</div>
+    <MDBContainer className="login-page">
+      <MDBRow className="align-items-center">
+        {/* Info Section */}
+        <MDBCol md="6" className="text-center bg-light py-5 rounded-start">
+          <h1 className="mb-4">Get Your Device Repair Anytime</h1>
+          <p>
+            PhoneLab brings top-notch repair services. We specialize in
+            repairing a variety of brands, ensuring convenience and expertise
+            meet at your home. Your trusted tech solution awaits!
+          </p>
+          <img
+            src={illustration}
+            alt="Device Repair"
+            className="img-fluid my-3 mx-15"
+            style={{ maxWidth: "70%" }}
+          />
+          <p className="text-muted small">
+            By creating an account, you agree to our Terms of Service, Privacy
+            Policy, and Notification Settings.
+          </p>
+        </MDBCol>
 
-            <p className="text-gray-600 mt-6 text-sm">
-              By creating an account, you agree with our
-              <span className="text-blue-600 cursor-pointer">
-                {" "}
-                Terms of Service
+        {/* Login Section */}
+        <MDBCol md="6" className="bg-white p-5 rounded-end shadow-sm">
+          <form onSubmit={handleLogin}>
+            <h2 className="mb-4 text-center">Sign in</h2>
+            {error && (
+              <p className="text-danger text-center small">{error}</p>
+            )}
+
+            {/* Email Input */}
+            <MDBInput
+              type="email"
+              label="Email address"
+              id="email"
+              className="mb-4"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+
+            {/* Password Input */}
+            <div className="position-relative">
+              <MDBInput
+                type={showPassword ? "text" : "password"}
+                label="Password"
+                id="password"
+                className="mb-4"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+              <span
+                className="password-toggle position-absolute"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
               </span>
-              ,{" "}
-              <span className="text-blue-600 cursor-pointer">
-                Privacy Policy
-              </span>
-              , and our default Notification Settings.
-            </p>
-          </div>
+            </div>
 
-          {/* Right Section (Login Form) */}
-          <div className="w-full md:w-1/2 lg:w-1/3 bg-white shadow-lg rounded-lg p-8">
-            <h3 className="text-xl font-semibold text-center mb-6">Sign in</h3>
-
-            <form onSubmit={handleSubmit}>
-              {/* Email Input */}
-              <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-medium">
-                  Email address
-                </label>
+            {/* Options */}
+            <div className="d-flex justify-content-between align-items-center mb-4">
+              <div>
                 <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Enter a valid email address"
-                  required
-                  aria-label="Email address"
+                  type="checkbox"
+                  id="rememberMe"
+                  className="form-check-input"
+                  checked={rememberMe}
+                  onChange={handleRememberMe}
                 />
-              </div>
-
-              {/* Password Input */}
-              <div className="mb-4 relative">
-                <label className="block text-gray-700 text-sm font-medium">
-                  Password
+                <label htmlFor="rememberMe" className="form-check-label ms-2">
+                  Remember me
                 </label>
-                <input
-                  type={showPassword ? "text" : "password"}
-                  id="password"
-                  name="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Enter password"
-                  required
-                  minLength="6"
-                  aria-label="Password"
-                />
-                <span
-                  className="absolute right-3 top-9 cursor-pointer text-gray-500"
-                  onClick={togglePasswordVisibility}
-                >
-                  {showPassword ? <BiHide />: <GrView />}
-                </span>
               </div>
+              <a href="#" className="text-decoration-none small">
+                Forgot password?
+              </a>
+            </div>
 
-              {/* Remember Me & Forgot Password */}
-              <div className="flex justify-between items-center text-sm">
-                <label className="flex items-center text-gray-600">
-                  <input type="checkbox" className="mr-2" /> Remember me
-                </label>
-                <a href="#" className="text-blue-600 hover:underline">
-                  Forgot password?
-                </a>
-              </div>
-
-              {/* Login Button */}
-              <div className="text-center mt-6">
-                <button
-                  type="submit"
-                  id="login_btn"
-                  className="w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition"
-                >
-                  Login
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
+            {/* Login Button */}
+            <div className="text-center">
+              <MDBBtn type="submit" className="btn-primary">
+                Login
+              </MDBBtn>
+            </div>
+          </form>
+        </MDBCol>
+      </MDBRow>
+    </MDBContainer>
   );
-};
+}
 
-export default LoginPage;
+export default Login;

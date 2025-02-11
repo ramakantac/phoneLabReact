@@ -1,1 +1,56 @@
 @import "tailwindcss";
+
+/* General Styling */
+body {
+    margin: 0;
+    background-color: #f8f9fa;
+  }
+  
+  .login-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .bg-light {
+    background-color: #f7fafc !important;
+  }
+  
+  img {
+    border-radius: 8px;
+  }
+  
+  .shadow-sm {
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .text-muted {
+    font-size: 13px;
+  }
+  
+  .text-danger {
+    font-size: 14px;
+  }
+  
+  /* Password Input Field */
+  .position-relative {
+    position: relative;
+  }
+  
+  .password-toggle {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: 20px;
+    color: #007bff;
+  }
+  
+  .password-toggle:hover {
+    color: #0056b3;
+  }
