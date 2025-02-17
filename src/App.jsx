@@ -1,17 +1,39 @@
-import React from 'react'
-import Login from './pages/Login'
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from './componets/Dasbord'
-import 'mdbreact/dist/css/mdb.css';
+import { useState } from 'react'
+import { Routes, Route, Navigate } from 'react-router-dom'
+import Login from './components/Login'
+import Dashboard from './components/Dashboard'
 
-const App = () => {
+function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+
+  const handleLogin = () => {
+    setIsAuthenticated(true)
+  }
+
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/home" element={<Home />} />
-      </Routes>
-    </Router>
+    <Routes>
+      <Route 
+        path="/login" 
+        element={
+          !isAuthenticated ? (
+            <Login onLogin={handleLogin} />
+          ) : (
+            <Navigate to="/dashboard" replace />
+          )
+        } 
+      />
+      <Route 
+        path="/dashboard" 
+        element={
+          isAuthenticated ? (
+            <Dashboard />
+          ) : (
+            <Navigate to="/login" replace />
+          )
+        } 
+      />
+      <Route path="/" element={<Navigate to="/login" replace />} />
+    </Routes>
   )
 }
 

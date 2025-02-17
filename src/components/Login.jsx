@@ -1,43 +1,35 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import users from "../demojson/users.json"; 
 import illustration from "../assets/phonelab-login.png";  
 import "mdb-react-ui-kit/dist/css/mdb.min.css"; 
 import { MDBContainer, MDBRow, MDBCol, MDBInput, MDBBtn } from "mdb-react-ui-kit";
-import { FaEye, FaEyeSlash } from "react-icons/fa"; 
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
-
-function Login() {
+function Login({ onLogin }) {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState(""); 
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
-
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    const user = users.find(
-      (user) => user.email === email && user.password === password
-    );
+  const handleRememberMe = useCallback(() => {
+    setRememberMe((prev) => !prev);
+  }, []);
 
-    if (user) {
-      setError("");
-      console.log("Login successful!");
-      navigate("/home");
-      if (rememberMe) {
-        localStorage.setItem("email", email);
-        localStorage.setItem("password", password);
+  const handleSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+      if (email === "admin@phonelab.com" && password === "admin123") {
+        setError("");
+        onLogin();
+        navigate("/dashboard");
+      } else {
+        setError("Invalid email or password");
       }
-    } else {
-      setError("Invalid email or password. Please try again.");
-    }
-  };
-
-  const handleRememberMe = () => {
-    setRememberMe(!rememberMe);
-  };
+    },
+    [email, password, navigate, onLogin]
+  );
 
   return (
     <MDBContainer className="login-page">
@@ -53,7 +45,7 @@ function Login() {
           <img
             src={illustration}
             alt="Device Repair"
-            className="img-fluid my-3 mx-15"
+            className="img-fluid my-3"
             style={{ maxWidth: "70%" }}
           />
           <p className="text-muted small">
@@ -64,11 +56,9 @@ function Login() {
 
         {/* Login Section */}
         <MDBCol md="6" className="bg-white p-5 rounded-end shadow-sm">
-          <form onSubmit={handleLogin}>
+          <form onSubmit={handleSubmit}>
             <h2 className="mb-4 text-center">Sign in</h2>
-            {error && (
-              <p className="text-danger text-center small">{error}</p>
-            )}
+            {error && <p className="text-danger text-center small">{error}</p>}
 
             {/* Email Input */}
             <MDBInput
@@ -82,12 +72,11 @@ function Login() {
             />
 
             {/* Password Input */}
-            <div className="position-relative">
+            <div className="position-relative mb-4">
               <MDBInput
                 type={showPassword ? "text" : "password"}
                 label="Password"
                 id="password"
-                className="mb-4"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
@@ -95,6 +84,12 @@ function Login() {
               <span
                 className="password-toggle position-absolute"
                 onClick={() => setShowPassword(!showPassword)}
+                style={{
+                  right: "10px",
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  cursor: "pointer",
+                }}
               >
                 {showPassword ? <FaEyeSlash /> : <FaEye />}
               </span>
@@ -102,7 +97,7 @@ function Login() {
 
             {/* Options */}
             <div className="d-flex justify-content-between align-items-center mb-4">
-              <div>
+              <div className="d-flex align-items-center">
                 <input
                   type="checkbox"
                   id="rememberMe"
