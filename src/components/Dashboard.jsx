@@ -93,10 +93,11 @@ function Header({ toggleSidebar }) {
   return (
     <div className="fixed top-0 left-0 right-0 h-16 bg-white border-b px-4 flex items-center justify-between">
       <div className="flex items-center">
-        <button onClick={toggleSidebar} className="p-2 hover:bg-gray-100 rounded-lg">
+      <img src="https://dstemp.teq2web.com/images/Logo.png" alt="PhoneLab" className="h-8 ml-1" />
+        <button onClick={toggleSidebar} className="p-2 hover:bg-gray-100 rounded-lg ml-2">
           <FiMenu className="text-xl" />
         </button>
-        <img src="/logo.png" alt="PhoneLab" className="h-8 ml-4" />
+       
       </div>
       
       <div className="flex-1 max-w-2xl mx-8">
@@ -118,7 +119,7 @@ function Header({ toggleSidebar }) {
         </button>
         <div className="flex items-center gap-2">
           <img
-            src="https://via.placeholder.com/32"
+            src="https://dstemp.teq2web.com/images/Logo.png"
             alt="Profile"
             className="w-8 h-8 rounded-full"
           />
