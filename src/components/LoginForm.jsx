@@ -11,12 +11,6 @@ function LoginForm({LoginFormReturn}) {
     const [isLoading, setIsLoading] = useState(false);
     const [msgBox, setMsgBox] = useState(<p></p>);
 
-    // const [error, setError] = useState("");
-    // const [rememberMe, setRememberMe] = useState(false);
-
-    // const handleRememberMe = useCallback(() => {
-    //     setRememberMe((prev) => !prev);
-    // }, []);
     const handleSubmit = useCallback(
         (e) => {
             setIsLoading(true);
@@ -38,7 +32,6 @@ function LoginForm({LoginFormReturn}) {
 
             }
         },
-        // [email, password, navigate, onLogin]
     );
 
     return (

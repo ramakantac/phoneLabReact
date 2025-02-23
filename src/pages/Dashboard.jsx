@@ -1,11 +1,16 @@
 import { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import Sidebar from '../components/SideBar.jsx';
+import store from "../useStore.js";
 
 function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const setAuthenticated = store((state) => state.setAuthenticated);
+
 
   useEffect(() => {
+      setAuthenticated(true);
+      console.log("Dashboard");
     const handleResize = () => setSidebarOpen(window.innerWidth >= 768);
     window.addEventListener('resize', handleResize);
     handleResize();
