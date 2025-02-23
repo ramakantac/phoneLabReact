@@ -9,6 +9,7 @@ function LoginForm({LoginFormReturn}) {
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [msgBox, setMsgBox] = useState(<p></p>);
 
     // const [error, setError] = useState("");
     // const [rememberMe, setRememberMe] = useState(false);
@@ -19,13 +20,22 @@ function LoginForm({LoginFormReturn}) {
     const handleSubmit = useCallback(
         (e) => {
             setIsLoading(true);
+            setMsgBox(<p className="text-success text-center" style={{fontWeight
+                    :600}}>Loading! Please Wait...</p>);
             e.preventDefault();
             if (email === "admin@phonelab.com" && password === "admin123") {
                 LoginFormReturn({success:true,msg:'Success'});
-                setIsLoading(false);
+                setMsgBox(<p className="text-success text-center" style={{fontWeight
+                        :600}}>Success! Redirecting...</p>);
             } else {
-                LoginFormReturn({success:false , msg:"Invalid email or password"});
+                LoginFormReturn({success:false , msg:"Invalid email or password!"});
+                setMsgBox(<p className="text-danger text-center" style={{fontWeight
+                        :600}}>Invalid email or password!</p>);
                 setIsLoading(false);
+                setTimeout(() => {
+                    setMsgBox(<p></p>); // Clear the message after 1 second
+                }, 2000);
+
             }
         },
         // [email, password, navigate, onLogin]
@@ -33,9 +43,9 @@ function LoginForm({LoginFormReturn}) {
 
     return (
         <form onSubmit={handleSubmit}>
-                        <h2 className="mb-4 text-center">Sign in</h2>
-                        {isLoading? <p className="text-danger text-center small">Loading! Please Wait..</p> : <p className="text-danger text-center small"></p>}
-
+                        <h2 className="mb-4 text-center">Sign in
+                            <span> {msgBox} </span>
+                        </h2>
                         {/* Email Input */}
                         <MDBInput
                             type="email"
@@ -92,7 +102,7 @@ function LoginForm({LoginFormReturn}) {
 
                         {/* Login Button */}
                         <div className="text-center">
-                            <MDBBtn type="submit" disabled={isLoading} className="btn-primary" size='lg'>
+                            <MDBBtn type="submit" disabled={isLoading} className="btn-primary" size='lg' >
                                 Login
                             </MDBBtn>
                         </div>

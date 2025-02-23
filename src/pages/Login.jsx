@@ -4,18 +4,16 @@ import illustration from "../assets/phonelab-login.png";
 import "mdb-react-ui-kit/dist/css/mdb.min.css";
 import {MDBContainer, MDBRow, MDBCol} from "mdb-react-ui-kit";
 import LoginForm from "../components/LoginForm";
+import store from "../useStore.js";
+
 
 function Login() {
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
+    const setAuthenticated = store((state) => state.setAuthenticated);
     const LoginFormReturnValue = (result) => {
         if (result.success) {
-                console.log(result.msg);
-            // setIsAuthenticated(true); // Update authentication state
-            // setErrorMessage(""); // Clear any existing errors
-        } else {
-            console.log(result.msg);
-            // setIsAuthenticated(false);
-            // setErrorMessage(result.msg); // Display error message
+            setAuthenticated(true);
+            navigate("/dashboard");
         }
     };
 

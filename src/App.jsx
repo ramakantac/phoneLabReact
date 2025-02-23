@@ -2,16 +2,17 @@ import { useState } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import Login from './pages/Login.jsx'
 import Dashboard from './pages/Dashboard.jsx'
+import store from "./useStore.js";
 
 function App() {
-      const [isAuthenticated, setIsAuthenticated] = useState(false)
+    const isAuthenticated = store((state) => state.isAuthenticated);
       return (
         <Routes>
           <Route
             path="/login"
             element={
               !isAuthenticated ? (
-                <Login setIsAuthenticated={setIsAuthenticated}/>
+                <Login/>
               ) : (
                 <Navigate to="/dashboard" replace />
               )
@@ -21,7 +22,7 @@ function App() {
             path="/dashboard"
             element={
               isAuthenticated ? (
-                <Dashboard setIsAuthenticated={setIsAuthenticated}/>
+                <Dashboard/>
               ) : (
                 <Navigate to="/login" replace />
               )
