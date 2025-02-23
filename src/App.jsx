@@ -1,40 +1,35 @@
 import { useState } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
-import Login from './components/Login'
-import Dashboard from './components/Dashboard'
+import Login from './pages/Login.jsx'
+import Dashboard from './pages/Dashboard.jsx'
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
-
-  const handleLogin = () => {
-    setIsAuthenticated(true)
-  }
-
-  return (
-    <Routes>
-      <Route 
-        path="/login" 
-        element={
-          !isAuthenticated ? (
-            <Login onLogin={handleLogin} />
-          ) : (
-            <Navigate to="/dashboard" replace />
-          )
-        } 
-      />
-      <Route 
-        path="/dashboard" 
-        element={
-          isAuthenticated ? (
-            <Dashboard />
-          ) : (
-            <Navigate to="/login" replace />
-          )
-        } 
-      />
-      <Route path="/" element={<Navigate to="/login" replace />} />
-    </Routes>
-  )
+      const [isAuthenticated, setIsAuthenticated] = useState(false)
+      return (
+        <Routes>
+          <Route
+            path="/login"
+            element={
+              !isAuthenticated ? (
+                <Login setIsAuthenticated={setIsAuthenticated}/>
+              ) : (
+                <Navigate to="/dashboard" replace />
+              )
+            }
+          />
+          <Route
+            path="/dashboard"
+            element={
+              isAuthenticated ? (
+                <Dashboard setIsAuthenticated={setIsAuthenticated}/>
+              ) : (
+                <Navigate to="/login" replace />
+              )
+            }
+          />
+          <Route path="/" element={<Navigate to="/login" replace />} />
+        </Routes>
+      )
 }
 
 export default App
